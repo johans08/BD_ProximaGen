@@ -30,15 +30,23 @@ BEGIN
         -- Validar si la modalidad ya existe antes de actualizar
         IF NOT EXISTS (SELECT 1 FROM [ProximaGen].[proximagen].[modalidades] WHERE modalidad = @modalidad)
         BEGIN
-            -- Actualizar una modalidad existente
-            UPDATE [ProximaGen].[proximagen].[modalidades]
-            SET modalidad = @modalidad
-            WHERE idModalidad = @idModalidad;
-            SET @creado = 1;
+			-- Validar si el ID de Modalidad existe antes de eliminar
+			IF EXISTS (SELECT 1 FROM [ProximaGen].[proximagen].[modalidades] WHERE idModalidad = @idModalidad)
+			BEGIN
+				-- Actualizar una modalidad existente
+				UPDATE [ProximaGen].[proximagen].[modalidades]
+				SET modalidad = @modalidad
+				WHERE idModalidad = @idModalidad;
+				SET @creado = 1;
+			END
+			ELSE
+			BEGIN
+				PRINT 'El ID de Modalidad no existe. No se ha realizado la actualizaci√≥n.';
+			END
         END
         ELSE
         BEGIN
-            PRINT 'La modalidad ya existe. No se ha realizado la actualizaciÛn.';
+            PRINT 'La modalidad ya existe. No se ha realizado la actualizaci√≥n.';
         END
     END
     ELSE IF @modo = 3
@@ -53,19 +61,19 @@ BEGIN
         END
         ELSE
         BEGIN
-            PRINT 'El ID de Modalidad no existe. No se ha realizado la eliminaciÛn.';
+            PRINT 'El ID de Modalidad no existe. No se ha realizado la eliminaci√≥n.';
         END
     END
     ELSE
     BEGIN
-        -- Manejar otros modos o valores de modo seg˙n sea necesario
-        -- Puedes agregar m·s casos o manejar errores aquÌ si es necesario
-        PRINT 'Modo no v·lido.';
+        -- Manejar otros modos o valores de modo seg√∫n sea necesario
+        -- Puedes agregar m√°s casos o manejar errores aqu√≠ si es necesario
+        PRINT 'Modo no v√°lido.';
     END
 
     IF @creado = 1
     BEGIN
-        PRINT 'La operaciÛn se ha completado con Èxito.';
+        PRINT 'La operaci√≥n se ha completado con √©xito.';
     END
 END;
 
@@ -76,6 +84,6 @@ EXEC CUD_Modalidades 1, NULL, 'Presencial';
 EXEC CUD_Modalidades 2, 1, 'Virtualidad';
 
 -- Ejemplo de llamada al procedimiento almacenado para eliminar una Modalidad existente
-EXEC CUD_Modalidades 3, 5, NULL;
+EXEC CUD_Modalidades 3, 3, NULL;
 
 Select * from ProximaGen.proximagen.modalidades
