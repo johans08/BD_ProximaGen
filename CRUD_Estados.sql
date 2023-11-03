@@ -1,4 +1,5 @@
 -- SCRIPT CRUD ESTADOS
+
 CREATE PROCEDURE CUD_Estados
 (
     @modo INT,
@@ -11,7 +12,7 @@ BEGIN
 
     IF @modo = 1
     BEGIN
-        -- Validar si la descripciÛn del estado ya existe
+        -- Validar si la descripci√≥n del estado ya existe
         IF NOT EXISTS (SELECT 1 FROM [ProximaGen].[proximagen].[estados] WHERE descripcionEstado = @descripcionEstado)
         BEGIN
             -- Insertar un nuevo estado
@@ -21,23 +22,31 @@ BEGIN
         END
         ELSE
         BEGIN
-            PRINT 'La descripciÛn del estado ya existe. No se ha creado un nuevo estado.';
+            PRINT 'La descripci√≥n del estado ya existe. No se ha creado un nuevo estado.';
         END
     END
     ELSE IF @modo = 2
     BEGIN
-        -- Validar si la descripciÛn del estado ya existe antes de actualizar
+        -- Validar si la descripci√≥n del estado ya existe antes de actualizar
         IF NOT EXISTS (SELECT 1 FROM [ProximaGen].[proximagen].[estados] WHERE descripcionEstado = @descripcionEstado)
         BEGIN
-            -- Actualizar un estado existente
-            UPDATE [ProximaGen].[proximagen].[estados]
-            SET descripcionEstado = @descripcionEstado
-            WHERE idEstado = @idEstado;
-            SET @creado = 1;
+			-- Validar si el ID de Estado existe antes de eliminar
+			IF EXISTS (SELECT 1 FROM [ProximaGen].[proximagen].[estados] WHERE idEstado = @idEstado)
+			BEGIN
+				-- Actualizar un estado existente
+				UPDATE [ProximaGen].[proximagen].[estados]
+				SET descripcionEstado = @descripcionEstado
+				WHERE idEstado = @idEstado;
+				SET @creado = 1;
+			END
+			ELSE
+			BEGIN
+				PRINT 'El ID de Estado no existe. No se ha realizado la eliminaci√≥n.';
+			END
         END
         ELSE
         BEGIN
-            PRINT 'La descripciÛn del estado ya existe. No se ha realizado la actualizaciÛn.';
+            PRINT 'La descripci√≥n del estado ya existe. No se ha realizado la actualizaci√≥n.';
         END
     END
     ELSE IF @modo = 3
@@ -52,31 +61,29 @@ BEGIN
         END
         ELSE
         BEGIN
-            PRINT 'El ID de Estado no existe. No se ha realizado la eliminaciÛn.';
+            PRINT 'El ID de Estado no existe. No se ha realizado la eliminaci√≥n.';
         END
     END
     ELSE
     BEGIN
-        -- Manejar otros modos o valores de modo seg˙n sea necesario
-        -- Puedes agregar m·s casos o manejar errores aquÌ si es necesario
-        PRINT 'Modo no v·lido.';
+        -- Manejar otros modos o valores de modo seg√∫n sea necesario
+        -- Puedes agregar m√°s casos o manejar errores aqu√≠ si es necesario
+        PRINT 'Modo no v√°lido.';
     END
 
     IF @creado = 1
     BEGIN
-        PRINT 'La operaciÛn se ha completado con Èxito.';
+        PRINT 'La operaci√≥n se ha completado con √©xito.';
     END
 END;
 
-
 -- Ejemplo de llamada al procedimiento almacenado para insertar un nuevo estado
-EXEC CUD_Estados 1, null, 'Esperando 4';
+EXEC CUD_Estados 1, null, 'Esperando 3';
 
 -- Ejemplo de llamada al procedimiento almacenado para actualizar un estado existente
-EXEC CUD_Estados 2, 1, 'Esperando 1';
+EXEC CUD_Estados 2, 1, 'Esperando 4';
 
 -- Ejemplo de llamada al procedimiento almacenado para eliminar un estado existente
-EXEC CUD_Estados 3, 4, NULL;
-
+EXEC CUD_Estados 3, 3, NULL;
 
 Select * from ProximaGen.proximagen.estados
