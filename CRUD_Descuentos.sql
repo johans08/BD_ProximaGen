@@ -1,6 +1,6 @@
 --SCRIPT CRUD DESCUENTOS
 
-ALTER PROCEDURE CUD_Descuentos
+CREATE PROCEDURE CUD_Descuentos
 (
     @modo INT,
     @idDescuento INT,
