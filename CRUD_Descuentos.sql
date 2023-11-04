@@ -82,7 +82,7 @@ BEGIN
 
     IF @creado = 1
     BEGIN
-        PRINT 'La operación se ha completado con éxito.';
+        SELECT 'La operación se ha completado con éxito.' as response
     END
 END;
 
