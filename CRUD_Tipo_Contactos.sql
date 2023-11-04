@@ -11,7 +11,7 @@ BEGIN
 
     IF @modo = 1
     BEGIN
-        -- Validar si la descripciÛn del tipo de contacto ya existe
+        -- Validar si la descripci√≥n del tipo de contacto ya existe
         IF NOT EXISTS (SELECT 1 FROM [ProximaGen].[proximagen].[tipocontactos] WHERE descripcionTipoContacto = @descripcionTipoContacto)
         BEGIN
             -- Insertar un nuevo tipo de contacto
@@ -21,12 +21,12 @@ BEGIN
         END
         ELSE
         BEGIN
-            PRINT 'La descripciÛn del tipo de contacto ya existe. No se ha creado un nuevo tipo de contacto.';
+            PRINT 'La descripci√≥n del tipo de contacto ya existe. No se ha creado un nuevo tipo de contacto.';
         END
     END
     ELSE IF @modo = 2
     BEGIN
-        -- Validar si la descripciÛn del tipo de contacto ya existe antes de actualizar
+        -- Validar si la descripci√≥n del tipo de contacto ya existe antes de actualizar
         IF NOT EXISTS (SELECT 1 FROM [ProximaGen].[proximagen].[tipocontactos] WHERE descripcionTipoContacto = @descripcionTipoContacto)
         BEGIN
 			-- Validar si el ID de Tipo de Contacto existe antes de eliminar
@@ -40,12 +40,12 @@ BEGIN
 			END
 			ELSE
 			BEGIN
-				PRINT 'El ID de Tipo de Contacto no existe. No se ha realizado la eliminaciÛn.';
+				PRINT 'El ID de Tipo de Contacto no existe. No se ha realizado la eliminaci√≥n.';
 			END
         END
         ELSE
         BEGIN
-            PRINT 'La descripciÛn del tipo de contacto ya existe. No se ha realizado la actualizaciÛn.';
+            PRINT 'La descripci√≥n del tipo de contacto ya existe. No se ha realizado la actualizaci√≥n.';
         END
     END
     ELSE IF @modo = 3
@@ -60,24 +60,24 @@ BEGIN
         END
         ELSE
         BEGIN
-            PRINT 'El ID de Tipo de Contacto no existe. No se ha realizado la eliminaciÛn.';
+            PRINT 'El ID de Tipo de Contacto no existe. No se ha realizado la eliminaci√≥n.';
         END
     END
     ELSE
     BEGIN
-        -- Manejar otros modos o valores de modo seg˙n sea necesario
-        -- Puedes agregar m·s casos o manejar errores aquÌ si es necesario
-        PRINT 'Modo no v·lido.';
+        -- Manejar otros modos o valores de modo seg√∫n sea necesario
+        -- Puedes agregar m√°s casos o manejar errores aqu√≠ si es necesario
+        PRINT 'Modo no v√°lido.';
     END
 
     IF @creado = 1
     BEGIN
-        PRINT 'La operaciÛn se ha completado con Èxito.';
+        SELECT 'La operaci√≥n se ha completado con √©xito.' as response
     END
 END;
 
 -- Ejemplo de llamada al procedimiento almacenado para insertar un nuevo estado
-EXEC CUD_Tipo_Contactos 1, null, 'Correo electrÛnicos';
+EXEC CUD_Tipo_Contactos 1, null, 'Correo electr√≥nicos';
 
 -- Ejemplo de llamada al procedimiento almacenado para actualizar un estado existente
 EXEC CUD_Tipo_Contactos 2, 1, 'Celular';
